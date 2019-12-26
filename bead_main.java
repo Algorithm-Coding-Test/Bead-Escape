@@ -30,7 +30,7 @@ class bead_main {
 		int n = scan.nextInt();
 		int m = scan.nextInt();
 		
-//		if(n < 3 || m > 10) return;
+		if(n < 3 || m > 10) return;
 		scan.nextLine();
 		
 		boolean[][] board = new boolean[n][m];
@@ -41,7 +41,7 @@ class bead_main {
 		
 		for(int i=0;i<n;i++) {
 			String ln =scan.nextLine().toString();
-			for(int j=0;j<ln.length();j++) {
+			for(int j=0;j<m;j++) {
 				switch(ln.charAt(j)) {
 				case '#':
 					board[i][j] = false;
@@ -69,17 +69,14 @@ class bead_main {
 		int resultNum = Integer.MAX_VALUE;
 		ArrayList<State> next = new ArrayList<>();
 		
-		next.add(new State(red, blue, 0));
+		if(red != null && blue != null) next.add(new State(red, blue, 0));
 		while(!next.isEmpty()) {
 			
 			State stat = next.get(0);
 			
-			System.out.println("New State : ("+stat.red.x+" , "+stat.red.y+"), ( "+stat.blue.x+", "+stat.blue.y+" ) num : "+stat.num);
-			System.out.println();
 			if(stat.num==11) break;
 			if(stat.red.x == result.x && stat.red.y == result.y && (stat.blue.x != result.x || stat.blue.y != result.y)) {
 				if(resultNum > stat.num) resultNum = stat.num;
-				System.out.println("EE");
 			}else if(stat.blue.x != result.x || stat.blue.y != result.y){
 
 				Point tempR = new Point(stat.red.x, stat.red.y);
