@@ -1,26 +1,27 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 
+class State{
+	Point red;
+	Point blue;
+	int num;
+	public State(Point red, Point blue, int num) {
+		this.red = red;
+		this.blue = blue;
+		this.num = num;
+	}
+}
+class Point{
+	int x = 0;
+	int y = 0;
+	public Point(int x, int y) {
+		this.x = x;
+		this.y = y;
+	}
+}
 class bead_main {
 	
-	public static class State{
-		Point red;
-		Point blue;
-		int num;
-		public State(Point red, Point blue, int num) {
-			this.red = red;
-			this.blue = blue;
-			this.num = num;
-		}
-	}
-	public static class Point{
-		int x = 0;
-		int y = 0;
-		public Point(int x, int y) {
-			this.x = x;
-			this.y = y;
-		}
-	}
+	
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -74,7 +75,7 @@ class bead_main {
 			
 			State stat = next.get(0);
 			
-			if(stat.num==11) break;
+			if(stat.num > 10) break;
 			if(stat.red.x == result.x && stat.red.y == result.y && (stat.blue.x != result.x || stat.blue.y != result.y)) {
 				if(resultNum > stat.num) resultNum = stat.num;
 			}else if(stat.blue.x != result.x || stat.blue.y != result.y){
@@ -82,51 +83,57 @@ class bead_main {
 				Point tempR = new Point(stat.red.x, stat.red.y);
 				Point tempB = new Point(stat.blue.x, stat.blue.y);
 				
-				if(tempR.x!= 0 && board[tempR.x-1][tempR.y] && (tempR.x != result.x || tempR.y != result.y)) {
+				if(tempR.x!= 0) {
 					
-					if(tempR.x > tempB.x && tempR.y == tempB.y) {
-						while(tempB.x!= 0 && board[tempB.x-1][tempB.y] && (tempB.x != result.x || tempB.y != result.y)) {
-							tempB.x--;
+					if(board[tempR.x-1][tempR.y] && (tempR.x != result.x || tempR.y != result.y)) {
+						
+						if(tempR.x > tempB.x && tempR.y == tempB.y) {
+							while(tempB.x!= 0 && board[tempB.x-1][tempB.y] && (tempB.x != result.x || tempB.y != result.y)) {
+								tempB.x--;
+							}
+							while(tempR.x!= 0 && board[tempR.x-1][tempR.y] && (tempR.x != result.x || tempR.y != result.y) && (tempR.x-1 != tempB.x || tempR.y != tempB.y) ) {
+								tempR.x--;
+							}
+						}else {
+							while(tempR.x!= 0 && board[tempR.x-1][tempR.y] && (tempR.x != result.x || tempR.y != result.y)) {
+								tempR.x--;
+							}
+							while(tempB.x!= 0 && board[tempB.x-1][tempB.y] && (tempB.x-1 != tempR.x || tempB.y != tempR.y) && (tempB.x != result.x || tempB.y != result.y)) {
+								tempB.x--;
+							}
+							if((tempR.x == result.x && tempR.y == result.y) && (tempB.x-1 == tempR.x && tempB.y == tempR.y)) {
+								tempB.x--;
+							}
 						}
-						while(tempR.x!= 0 && board[tempR.x-1][tempR.y] && (tempR.x != result.x || tempR.y != result.y) && (tempR.x-1 != tempB.x || tempR.y != tempB.y) ) {
-							tempR.x--;
-						}
-					}else {
-						while(tempR.x!= 0 && board[tempR.x-1][tempR.y] && (tempR.x != result.x || tempR.y != result.y)) {
-							tempR.x--;
-						}
-						while(tempB.x!= 0 && board[tempB.x-1][tempB.y] && (tempB.x-1 != tempR.x || tempB.y != tempR.y) && (tempB.x != result.x || tempB.y != result.y)) {
-							tempB.x--;
-						}
-						if((tempR.x == result.x && tempR.y == result.y) && (tempB.x-1 == tempR.x && tempB.y == tempR.y)) {
-							tempB.x--;
-						}
+						next.add(new State(tempR, tempB, stat.num+1));
 					}
-					next.add(new State(tempR, tempB, stat.num+1));
 				}
 				
 				tempR = new Point(stat.red.x, stat.red.y);
 				tempB = new Point(stat.blue.x, stat.blue.y);
-				if(tempR.x!= n-1 && board[tempR.x+1][tempR.y] && (tempR.x != result.x || tempR.y != result.y)) {
-					if(tempR.x < tempB.x && tempR.y == tempB.y) {
-						while(tempB.x != n-1 && board[tempB.x+1][tempB.y] && (tempB.x != result.x || tempB.y != result.y)) {
-							tempB.x++;
+				if(tempR.x!= n-1) {
+					if(board[tempR.x+1][tempR.y] && (tempR.x != result.x || tempR.y != result.y)) {
+						if(tempR.x < tempB.x && tempR.y == tempB.y) {
+							while(tempB.x != n-1 && board[tempB.x+1][tempB.y] && (tempB.x != result.x || tempB.y != result.y)) {
+								tempB.x++;
+							}
+							while(tempR.x!= n-1 && board[tempR.x+1][tempR.y] && (tempR.x != result.x || tempR.y != result.y)  && !(tempR.x+1 == tempB.x && tempR.y == tempB.y)) {
+								tempR.x++;
+							}
+						}else {
+							while(tempR.x!= n-1 && board[tempR.x+1][tempR.y] && (tempR.x != result.x || tempR.y != result.y)) {
+								tempR.x++;
+							}
+							while(tempB.x != n-1 && board[tempB.x+1][tempB.y] && !(tempB.x+1 == tempR.x && tempB.y == tempR.y) && (tempB.x != result.x || tempB.y != result.y)) {
+								tempB.x++;
+							}
+							if((tempR.x == result.x && tempR.y == result.y) && (tempB.x+1 == tempR.x && tempB.y == tempR.y)) {
+								tempB.x++;
+							}
 						}
-						while(tempR.x!= n-1 && board[tempR.x+1][tempR.y] && (tempR.x != result.x || tempR.y != result.y)  && !(tempR.x+1 == tempB.x && tempR.y == tempB.y)) {
-							tempR.x++;
-						}
-					}else {
-						while(tempR.x!= n-1 && board[tempR.x+1][tempR.y] && (tempR.x != result.x || tempR.y != result.y)) {
-							tempR.x++;
-						}
-						while(tempB.x != n-1 && board[tempB.x+1][tempB.y] && !(tempB.x+1 == tempR.x && tempB.y == tempR.y) && (tempB.x != result.x || tempB.y != result.y)) {
-							tempB.x++;
-						}
-						if((tempR.x == result.x && tempR.y == result.y) && (tempB.x+1 == tempR.x && tempB.y == tempR.y)) {
-							tempB.x++;
-						}
+						next.add(new State(tempR, tempB, stat.num+1));
 					}
-					next.add(new State(tempR, tempB, stat.num+1));
+
 				}
 
 				tempR = new Point(stat.red.x, stat.red.y);
