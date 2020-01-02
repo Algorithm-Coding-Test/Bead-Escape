@@ -19,7 +19,7 @@ class Point{
 		this.y = y;
 	}
 }
-class bead_main {
+public class Main {
 	
 	
 
@@ -192,9 +192,9 @@ class bead_main {
 			
 		}
 		if(resultNum == Integer.MAX_VALUE) {
-			System.out.println(-1);
+			System.out.print(-1);
 		}else {
-			System.out.println(resultNum);
+			System.out.print(resultNum);
 		}
 		
 	}
